@@ -117,68 +117,68 @@ class Route extends \Router\Router
 	}
 
 	public static function loadClass($route_components)
+	{
+		// d($route_components);
+		${"action"} = $route_components["componets"]['existing_route'][1];
+		$controller = $route_components["componets"]['controller'];
+	
+		if(class_exists($route_components["componets"]['controller']))
 		{
-			// d($route_components);
-			${"action"} = $route_components["componets"]['existing_route'][1];
-			$controller = $route_components["componets"]['controller'];
-		
-			if(class_exists($route_components["componets"]['controller']))
-			{
-				$usedController = new $route_components["componets"]['controller'];
-				
-				if ($route_components["componets"]['existing_route'][1] != '' || $route_components["componets"]['existing_route'][1] != 'store' ) {
-					$id = Request::id();
-					// var_dump($usedController->${"action"}($id));
-					return $usedController->${"action"}($id);
-				}
-					// dd($usedController->${"action"}());
-				return $usedController->${"action"}();
-			}
-			throw new \Exception('Requested class does not exist!');
-
-			die('GET not pass go to login');
-		}
-
-		public static function getDefaultRoutes()
-		{
-			$routes = array(
-				'GET/' => 'IndexController@index',
-				'GET/login' => 'LoginController@index',
-				'POST/login/verify' => 'LoginController@login',
-				'GET/logout' => 'LogoutController@logout',
-				'GET/error' => 'IndexController@error',
-			);
-
-			return $routes;
-		}
-
-
-		public static function getCoreRoutes()
-		{
-			$routes = array(
-				'GET/' => 'IndexController@index',
-				'GET/error' => 'LoginController@error',
-				'GET/error' => 'IndexController@error',
-				
-			);
-
-			return $routes;
-		}
-
-		public static function getAllRoutes()
-		{
-			$routes = \App::get('database')->getAllRoutes('routes');
+			$usedController = new $route_components["componets"]['controller'];
 			
-			for ($i=0; $i < count($routes); $i++) { 
-
-				$routes_list[$i] = $routes[$i]->uri .'=>'. $routes[$i]->controller_name;
+			if ($route_components["componets"]['existing_route'][1] != '' || $route_components["componets"]['existing_route'][1] != 'store' ) {
+				$id = Request::id();
+				// var_dump($usedController->${"action"}($id));
+				return $usedController->${"action"}($id);
 			}
-			$routes = implode(',', $routes_list);
-			$routes = editRoutes($routes);
-			// dd($routes);
-
-			return $routes;
+				// dd($usedController->${"action"}());
+			return $usedController->${"action"}();
 		}
+		throw new \Exception('Requested class does not exist!');
+
+		die('GET not pass go to login');
+	}
+
+	public static function getDefaultRoutes()
+	{
+		$routes = array(
+			'GET/' => 'IndexController@index',
+			'GET/login' => 'LoginController@index',
+			'POST/login/verify' => 'LoginController@login',
+			'GET/logout' => 'LogoutController@logout',
+			'GET/error' => 'IndexController@error',
+		);
+
+		return $routes;
+	}
+
+
+	public static function getCoreRoutes()
+	{
+		$routes = array(
+			'GET/' => 'IndexController@index',
+			'GET/error' => 'LoginController@error',
+			'GET/error' => 'IndexController@error',
+			
+		);
+
+		return $routes;
+	}
+
+	public static function getAllRoutes()
+	{
+		$routes = \App::get('database')->getAllRoutes('routes');
+		
+		for ($i=0; $i < count($routes); $i++) { 
+
+			$routes_list[$i] = $routes[$i]->uri .'=>'. $routes[$i]->controller_name;
+		}
+		$routes = implode(',', $routes_list);
+		$routes = editRoutes($routes);
+		// dd($routes);
+
+		return $routes;
+	}
 }
 
 ?>
